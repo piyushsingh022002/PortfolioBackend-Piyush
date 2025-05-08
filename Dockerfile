@@ -17,4 +17,4 @@ COPY --from=build /app/out .
 
 # Expose port 80
 EXPOSE 80
-ENTRYPOINT ["dotnet", "YourAppName.dll"]
+ENTRYPOINT ["dotnet", "backend.dll"]
