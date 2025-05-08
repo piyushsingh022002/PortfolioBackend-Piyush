@@ -1,0 +1,11 @@
+### Submit a query
+POST http://localhost:5000/api/query
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "designation": "Software Engineer",
+  "email": "john.doe@example.com",
+  "phone": "+1 (555) 123-4567",
+  "query": "I'm interested in collaborating on a project. Can we talk?"
+}
