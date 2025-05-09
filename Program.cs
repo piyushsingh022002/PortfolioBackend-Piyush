@@ -25,7 +25,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
         policy =>
         {
-            policy.WithOrigins("https://portfolio-frontend-piyush.vercel.app/") // ✅ your Vercel frontend
+            policy.WithOrigins("https://portfolio-frontend-piyush.vercel.app") // ✅ your Vercel frontend
                   .AllowAnyHeader()
                   .AllowAnyMethod()
                   .AllowCredentials()
