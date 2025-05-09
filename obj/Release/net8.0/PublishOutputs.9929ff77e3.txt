@@ -1,6 +1,12 @@
 /Users/piyush/Desktop/Portfolio/backend/out/backend
+/Users/piyush/Desktop/Portfolio/backend/out/out/web.config
 /Users/piyush/Desktop/Portfolio/backend/out/appsettings.Development.json
 /Users/piyush/Desktop/Portfolio/backend/out/appsettings.json
+/Users/piyush/Desktop/Portfolio/backend/out/out/appsettings.Development.json
+/Users/piyush/Desktop/Portfolio/backend/out/out/appsettings.json
+/Users/piyush/Desktop/Portfolio/backend/out/out/backend.deps.json
+/Users/piyush/Desktop/Portfolio/backend/out/out/backend.runtimeconfig.json
+/Users/piyush/Desktop/Portfolio/backend/out/out/backend.staticwebassets.endpoints.json
 /Users/piyush/Desktop/Portfolio/backend/out/backend.dll
 /Users/piyush/Desktop/Portfolio/backend/out/backend.runtimeconfig.json
 /Users/piyush/Desktop/Portfolio/backend/out/backend.pdb

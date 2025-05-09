@@ -189,3 +189,9 @@
 /Users/piyush/Desktop/Portfolio/backend/obj/Release/net8.0/backend.pdb
 /Users/piyush/Desktop/Portfolio/backend/obj/Release/net8.0/backend.genruntimeconfig.cache
 /Users/piyush/Desktop/Portfolio/backend/obj/Release/net8.0/ref/backend.dll
+/Users/piyush/Desktop/Portfolio/backend/bin/Release/net8.0/out/web.config
+/Users/piyush/Desktop/Portfolio/backend/bin/Release/net8.0/out/appsettings.Development.json
+/Users/piyush/Desktop/Portfolio/backend/bin/Release/net8.0/out/appsettings.json
+/Users/piyush/Desktop/Portfolio/backend/bin/Release/net8.0/out/backend.deps.json
+/Users/piyush/Desktop/Portfolio/backend/bin/Release/net8.0/out/backend.runtimeconfig.json
+/Users/piyush/Desktop/Portfolio/backend/bin/Release/net8.0/out/backend.staticwebassets.endpoints.json
