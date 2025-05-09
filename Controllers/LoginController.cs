@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Backend.Controllers
 {
     [ApiController]
-    [Route("api/v1/login")]
+    [Route("api/v1")]
 
     public class LoginController : Controller
     {
