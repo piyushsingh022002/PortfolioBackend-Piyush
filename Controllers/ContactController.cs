@@ -15,7 +15,7 @@ public class ContactController : ControllerBase
         _dbContext = dbContext;
     }
 
-    [HttpPost("Contact")]
+    [HttpPost("contact")]
     public IActionResult SubmitContact([FromBody] ContactForm contact, [FromServices] IEmailService emailService)
     {
         _dbContext.Contacts.Add(contact);
