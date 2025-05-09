@@ -5143,11 +5143,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/piyush/Desktop/Portfolio/backend/backend.csproj",
+      "projectUniqueName": "/Users/piyush/Desktop/backend/backend.csproj",
       "projectName": "backend",
-      "projectPath": "/Users/piyush/Desktop/Portfolio/backend/backend.csproj",
+      "projectPath": "/Users/piyush/Desktop/backend/backend.csproj",
       "packagesPath": "/Users/piyush/.nuget/packages/",
-      "outputPath": "/Users/piyush/Desktop/Portfolio/backend/obj/",
+      "outputPath": "/Users/piyush/Desktop/backend/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/piyush/.nuget/NuGet/NuGet.Config"

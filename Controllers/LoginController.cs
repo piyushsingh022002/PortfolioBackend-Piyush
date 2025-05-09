@@ -3,15 +3,16 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers
 {
+    [ApiController]
     [Route("api/v1/login")]
-[ApiController]
+
     public class LoginController : Controller
     {
         private readonly string validUsername = "PiyushSingh";
         private readonly string validPassword = "12345";
 
 
-        [HttpPost]
+        [HttpPost("login")]
         public IActionResult Login([FromBody] Login model)
         {
             if (model.Username == validUsername && model.Password == validPassword)
