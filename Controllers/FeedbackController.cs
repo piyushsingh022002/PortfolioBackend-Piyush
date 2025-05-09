@@ -29,7 +29,7 @@ namespace Backend.Controllers
             return Ok(new { message = "Query submitted successfully." });
         }
 
-        [HttpGet]
+        [HttpGet("feedback")]
         public async Task<IActionResult> GetAllFeedback()
         {
             var feedbacks = await _context.Feedbacks.ToListAsync();
