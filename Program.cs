@@ -29,31 +29,31 @@ builder.Services.AddScoped<IQueryService, QueryService>();
 
 
 // Add Hangfire services
-// builder.Services.AddHangfire(config =>
-// {
-//     config.SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
-//           .UseSimpleAssemblyNameTypeSerializer()
-//           .UseRecommendedSerializerSettings()
-//           .UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection"));
-// });
-// builder.Services.AddHangfireServer();
-
-// ✅ Register Hangfire services
-builder.Services.AddHangfire(configuration =>
-    configuration.SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
-                 .UseSimpleAssemblyNameTypeSerializer()
-                 .UseRecommendedSerializerSettings()
-                 .UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection"), new SqlServerStorageOptions
-                 {
-                     CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
-                     SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
-                     QueuePollInterval = TimeSpan.Zero,
-                     UseRecommendedIsolationLevel = true,
-                     DisableGlobalLocks = true
-                 }));
-
-// ✅ Add Hangfire Server (to process jobs)
+builder.Services.AddHangfire(config =>
+{
+    config.SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+          .UseSimpleAssemblyNameTypeSerializer()
+          .UseRecommendedSerializerSettings()
+          .UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
 builder.Services.AddHangfireServer();
+
+// // ✅ Register Hangfire services
+// builder.Services.AddHangfire(configuration =>
+//     configuration.SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+//                  .UseSimpleAssemblyNameTypeSerializer()
+//                  .UseRecommendedSerializerSettings()
+//                  .UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection"), new SqlServerStorageOptions
+//                  {
+//                      CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+//                      SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+//                      QueuePollInterval = TimeSpan.Zero,
+//                      UseRecommendedIsolationLevel = true,
+//                      DisableGlobalLocks = true
+//                  }));
+
+// // ✅ Add Hangfire Server (to process jobs)
+// builder.Services.AddHangfireServer();
 
 
 
