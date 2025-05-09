@@ -20,15 +20,22 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
-builder.Services.AddCors(options =>{
-    options.AddPolicy(name:MyAllowSpecificOrigins,
-    policy=>{
-        policy.WithOrigins("http://localhost:3000","https://portfolio-frontend-piyush.vercel.app")
-        .AllowAnyHeader()
-        .AllowAnyMethod();
-
-    });
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+        policy =>
+        {
+            policy.WithOrigins("https://portfolio-frontend-piyush.vercel.app/") // ✅ your Vercel frontend
+                  .AllowAnyHeader()
+                  .AllowAnyMethod()
+                  .AllowCredentials()
+;
+        });
 });
+
+
+
+
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IQueryService, QueryService>();
 
@@ -113,6 +120,9 @@ builder.Services.AddAuthentication("Bearer")
 
 
 var app = builder.Build();
+app.UseCors(MyAllowSpecificOrigins); // ✅ apply the named policy
+
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -124,7 +134,6 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
-app.UseCors(MyAllowSpecificOrigins);
 
 app.UseAuthentication();
 app.UseAuthorization();
