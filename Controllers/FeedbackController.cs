@@ -2,6 +2,7 @@ using System.Reflection.Metadata.Ecma335;
 using backend.Models;
 using Backend.Data;
 using Backend.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,6 +30,7 @@ namespace Backend.Controllers
             return Ok(new { message = "Query submitted successfully." });
         }
 
+        [Authorize]
         [HttpGet("feedback")]
         public async Task<IActionResult> GetAllFeedback()
         {
