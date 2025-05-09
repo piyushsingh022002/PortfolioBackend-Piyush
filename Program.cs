@@ -18,8 +18,6 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend",
@@ -119,7 +117,7 @@ builder.Services.AddAuthentication("Bearer")
 
 
 var app = builder.Build();
-app.UseCors(MyAllowSpecificOrigins); // ✅ apply the named policy
+app.UseCors("AllowFrontend"); // ✅ apply the named policy
 
 
 
