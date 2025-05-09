@@ -8,7 +8,8 @@ using Hangfire.SqlServer;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllers();
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -79,22 +80,10 @@ app.UseAuthorization();
 //     name: "default",
 //     pattern: "{controller=Home}/{action=Index}/{id?}")
 //     .WithStaticAssets();
+app.MapControllers();
 app.UseHangfireDashboard("/hangfire");
+
 
 app.Run();
 
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    try
-    {
-        db.Database.OpenConnection();
-        Console.WriteLine("✅ Connection successful!");
-        db.Database.CloseConnection();
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine("❌ Connection failed: " + ex.Message);
-    }
-}
 
