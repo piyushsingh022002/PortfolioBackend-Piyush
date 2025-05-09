@@ -5,7 +5,7 @@ using Backend.Models;
 using Backend.Services;
 
 [ApiController]
-[Route("api/v1/ContactController")]
+[Route("api/v1")]
 public class ContactController : ControllerBase
 {
     private readonly AppDbContext _dbContext;
@@ -15,7 +15,7 @@ public class ContactController : ControllerBase
         _dbContext = dbContext;
     }
 
-    [HttpPost]
+    [HttpPost("Contact")]
     public IActionResult SubmitContact([FromBody] ContactForm contact, [FromServices] IEmailService emailService)
     {
         _dbContext.Contacts.Add(contact);

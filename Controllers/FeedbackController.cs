@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Backend.Controllers
 {
     [ApiController]
-    [Route("api/v1/feedback")]
+    [Route("api/v1")]
 
     public class FeedbackController : ControllerBase
     {
@@ -17,7 +17,7 @@ namespace Backend.Controllers
         {
             _context = context;
         }
-        [HttpPost]
+        [HttpPost("feedback")]
         public async Task<IActionResult> SubmitFeedback([FromBody] FeedbackForm feedback)
         {
             if (!ModelState.IsValid)

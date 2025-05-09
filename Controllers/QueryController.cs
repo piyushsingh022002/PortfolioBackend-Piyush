@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Backend.Controllers
 {
     [ApiController]
-    [Route("api/v1/QueryController")]
+    [Route("api/v1")]
 
     public class QueryController : ControllerBase
     {
@@ -19,7 +19,7 @@ namespace Backend.Controllers
             _context = context;
             _queryService = queryService;
         }
-        [HttpPost]
+        [HttpPost("query")]
         public async Task<IActionResult> SubmitQuery([FromBody] QueryForm query)
         {
             if (!ModelState.IsValid)
