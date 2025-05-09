@@ -22,14 +22,13 @@ var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: MyAllowSpecificOrigins,
+    options.AddPolicy("AllowFrontend",
         policy =>
         {
-            policy.WithOrigins("https://portfolio-frontend-piyush.vercel.app") // ✅ your Vercel frontend
+            policy.WithOrigins("http://portfolio-frontend-piyush.vercel.app","http://localhost:3000") // ✅ your Vercel frontend
                   .AllowAnyHeader()
                   .AllowAnyMethod()
-                  .AllowCredentials()
-;
+                  .AllowCredentials().WithExposedHeaders("Authorization").SetPreflightMaxAge(TimeSpan.FromMinutes(30));
         });
 });
 
