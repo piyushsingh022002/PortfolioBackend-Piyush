@@ -136,3 +136,9 @@ app.MapControllers();
 app.UseHangfireDashboard("/hangfire");
 
 app.Run();
+
+using (var httpClient = new HttpClient())
+{
+    var ip = await httpClient.GetStringAsync("https://api.ipify.org");
+    Console.WriteLine("Public IP: " + ip);
+}
