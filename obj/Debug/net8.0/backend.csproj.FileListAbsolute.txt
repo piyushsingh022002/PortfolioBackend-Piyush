@@ -398,3 +398,4 @@
 /Users/piyush/Desktop/backend/bin/Debug/net8.0/Swashbuckle.AspNetCore.SwaggerGen.dll
 /Users/piyush/Desktop/backend/bin/Debug/net8.0/Swashbuckle.AspNetCore.SwaggerUI.dll
 /Users/piyush/Desktop/backend/obj/Debug/net8.0/backend.MvcApplicationPartsAssemblyInfo.cs
+/Users/piyush/Desktop/backend/bin/Debug/net8.0/appsettings.Production.json

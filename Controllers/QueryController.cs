@@ -30,7 +30,18 @@ namespace Backend.Controllers
             await _context.SaveChangesAsync();
 
 
-         _queryService.SendQueryEmailAsync(query.Name, query.Email, query.Designation, query.Phone, query.Query);
+
+            if (string.IsNullOrWhiteSpace(query.Name) ||
+               string.IsNullOrWhiteSpace(query.Email) ||
+               string.IsNullOrWhiteSpace(query.Designation) ||
+               string.IsNullOrWhiteSpace(query.Phone) ||
+               string.IsNullOrWhiteSpace(query.Query))
+            {
+                return BadRequest("All fields are required.");
+            }
+
+
+            await _queryService.SendQueryEmailAsync(query.Name, query.Email, query.Designation, query.Phone, query.Query);
 
 
 

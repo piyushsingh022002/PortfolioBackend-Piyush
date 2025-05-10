@@ -22,6 +22,12 @@ public class ContactController : ControllerBase
         _dbContext.SaveChanges();
 
         // Enqueue background email job using Hangfire
+        if (string.IsNullOrWhiteSpace(contact.Name) ||
+        string.IsNullOrWhiteSpace(contact.Email) ||
+        string.IsNullOrWhiteSpace(contact.Message))
+        {
+            return BadRequest("All fields are required.");
+        }
         BackgroundJob.Enqueue(() => emailService.SendContactEmailAsync(contact.Name, contact.Email, contact.Message));
 
         return Ok(new { message = "Contact submitted successfully." });

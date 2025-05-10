@@ -1,54 +1,38 @@
 using Backend.Data;
-using Microsoft.EntityFrameworkCore;
-using Hangfire;
 using Backend.Services;
+using Hangfire;
 using Hangfire.SqlServer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using Microsoft.OpenApi.Models;
-
-// using Microsoft.AspNetCore.Authentication.JwtBearer;
-
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add services
 builder.Services.AddControllers();
 
+// Database
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// CORS
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowFrontend",
-        policy =>
-        {
-            policy.WithOrigins("http://portfolio-frontend-piyush.vercel.app","http://localhost:3000") // ✅ your Vercel frontend
-                  .AllowAnyHeader()
-                  .AllowAnyMethod()
-                  .AllowCredentials().WithExposedHeaders("Authorization").SetPreflightMaxAge(TimeSpan.FromMinutes(30));
-        });
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins(
+                "https://portfolio-frontend-piyush.vercel.app", // Use HTTPS!
+                "http://localhost:3000")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials()
+              .WithExposedHeaders("Authorization")
+              .SetPreflightMaxAge(TimeSpan.FromMinutes(30));
+    });
 });
 
-
-
-
-builder.Services.AddScoped<IEmailService, EmailService>();
-builder.Services.AddScoped<IQueryService, QueryService>();
-
-
-
-// Add Hangfire services
-// builder.Services.AddHangfire(config =>
-// {
-//     config.SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
-//           .UseSimpleAssemblyNameTypeSerializer()
-//           .UseRecommendedSerializerSettings()
-//           .UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection"));
-// });
-// builder.Services.AddHangfireServer();
-
-// ✅ Register Hangfire services
+// Hangfire
 builder.Services.AddHangfire(configuration =>
     configuration.SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
                  .UseSimpleAssemblyNameTypeSerializer()
@@ -61,11 +45,13 @@ builder.Services.AddHangfire(configuration =>
                      UseRecommendedIsolationLevel = true,
                      DisableGlobalLocks = true
                  }));
-
-// ✅ Add Hangfire Server (to process jobs)
 builder.Services.AddHangfireServer();
 
-builder.Services.AddControllers();
+// Services
+builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IQueryService, QueryService>();
+
+// Authentication (JWT)
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
     {
@@ -76,17 +62,18 @@ builder.Services.AddAuthentication("Bearer")
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
 
-            ValidIssuer = "yourIssuer",
-            ValidAudience = "yourAudience",
-            IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(Encoding.UTF8.GetBytes("12123432345098990897654565434565"))
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"] ?? throw new InvalidOperationException("JWT key not configured"))
+            )
         };
     });
 
-   builder.Services.AddSwaggerGen(c =>
+// Swagger
+builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
-
-    // Add security definitions for JWT Bearer Authentication (for Swagger UI)
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         In = ParameterLocation.Header,
@@ -96,7 +83,6 @@ builder.Services.AddAuthentication("Bearer")
         BearerFormat = "JWT",
         Description = "Enter 'Bearer' followed by your token"
     });
-
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
@@ -108,50 +94,40 @@ builder.Services.AddAuthentication("Bearer")
                     Id = "Bearer"
                 }
             },
-            new string[] {}
+            Array.Empty<string>()
         }
     });
 });
 
-
-
-
 var app = builder.Build();
-app.UseCors("AllowFrontend"); // ✅ apply the named policy
 
-
-
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
-
+// Middleware
 app.UseHttpsRedirection();
+
 app.UseRouting();
+
+app.UseCors("AllowFrontend");
 
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseSwagger();
-app.UseSwaggerUI(c =>
+if (app.Environment.IsDevelopment())
 {
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-    c.RoutePrefix = string.Empty; // This makes Swagger UI accessible at the root of the app (e.g., http://localhost:5177/)
-});
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+        c.RoutePrefix = string.Empty;
+    });
+}
+else
+{
+    app.UseExceptionHandler("/Home/Error");
+    app.UseHsts();
+}
 
-// app.MapStaticAssets();
-
-// app.MapControllerRoute(
-//     name: "default",
-//     pattern: "{controller=Home}/{action=Index}/{id?}")
-//     .WithStaticAssets();
+// Controllers & Hangfire
 app.MapControllers();
 app.UseHangfireDashboard("/hangfire");
 
-
 app.Run();
-
-
