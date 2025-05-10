@@ -25,42 +25,43 @@ namespace Backend.Controllers
         [HttpPost("login")]
         public IActionResult Login([FromBody] Login model)
         {
-            if (model.Username == validUsername && model.Password == validPassword)
-            {
-                var claims = new[]
-                {
-                    new Claim(ClaimTypes.Name, model.Username)
-                };
+            return Ok(new { message = "This works" });
+            // if (model.Username == validUsername && model.Password == validPassword)
+            // {
+            //     var claims = new[]
+            //     {
+            //         new Claim(ClaimTypes.Name, model.Username)
+            //     };
 
-                var key = new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(_configuration["Jwt:Key"] ?? throw new InvalidOperationException("JWT key missing"))
-                );
+            //     var key = new SymmetricSecurityKey(
+            //         Encoding.UTF8.GetBytes(_configuration["Jwt:Key"] ?? throw new InvalidOperationException("JWT key missing"))
+            //     );
 
-                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            //     var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-                var token = new JwtSecurityToken(
-                    issuer: _configuration["Jwt:Issuer"],
-                    audience: _configuration["Jwt:Audience"],
-                    claims: claims,
-                    expires: DateTime.UtcNow.AddMinutes(30),
-                    signingCredentials: creds
-                );
+            //     var token = new JwtSecurityToken(
+            //         issuer: _configuration["Jwt:Issuer"],
+            //         audience: _configuration["Jwt:Audience"],
+            //         claims: claims,
+            //         expires: DateTime.UtcNow.AddMinutes(30),
+            //         signingCredentials: creds
+            //     );
 
-                var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+            //     var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
 
-                return Ok(new
-                {
-                    success = true,
-                    message = "Login successful",
-                    token = tokenString
-                });
-            }
+            //     return Ok(new
+            //     {
+            //         success = true,
+            //         message = "Login successful",
+            //         token = tokenString
+            //     });
+            // }
 
-            return Unauthorized(new
-            {
-                success = false,
-                message = "Invalid credentials"
-            });
+            // return Unauthorized(new
+            // {
+            //     success = false,
+            //     message = "Invalid credentials"
+            // });
         }
     }
 }
