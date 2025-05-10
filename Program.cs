@@ -98,6 +98,11 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.ListenAnyIP(Convert.ToInt32(Environment.GetEnvironmentVariable("PORT") ?? "10000"));
+});
+
 
 var app = builder.Build();
 
