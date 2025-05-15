@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/piyush/Desktop/backend/backend.csproj": {}
+    "/Users/piyush/Desktop/Deployed/Portfolio_PiyushSingh/backend/backend.csproj": {}
   },
   "projects": {
-    "/Users/piyush/Desktop/backend/backend.csproj": {
+    "/Users/piyush/Desktop/Deployed/Portfolio_PiyushSingh/backend/backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/piyush/Desktop/backend/backend.csproj",
+        "projectUniqueName": "/Users/piyush/Desktop/Deployed/Portfolio_PiyushSingh/backend/backend.csproj",
         "projectName": "backend",
-        "projectPath": "/Users/piyush/Desktop/backend/backend.csproj",
+        "projectPath": "/Users/piyush/Desktop/Deployed/Portfolio_PiyushSingh/backend/backend.csproj",
         "packagesPath": "/Users/piyush/.nuget/packages/",
-        "outputPath": "/Users/piyush/Desktop/backend/obj/",
+        "outputPath": "/Users/piyush/Desktop/Deployed/Portfolio_PiyushSingh/backend/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/piyush/.nuget/NuGet/NuGet.Config"
@@ -50,17 +50,21 @@
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
-              "version": "[9.0.4, )"
+              "version": "[8.0.0, )"
             },
             "Microsoft.EntityFrameworkCore.Tools": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[9.0.4, )"
+              "version": "[8.0.0, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[8.0.0, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[7.0.4, )"
             }
           },
           "imports": [
