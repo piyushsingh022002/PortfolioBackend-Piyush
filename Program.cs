@@ -1,8 +1,4 @@
-using Backend.Data;
 using Backend.Services;
-using Hangfire;
-using Hangfire.SqlServer;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
@@ -12,17 +8,13 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services
 builder.Services.AddControllers();
 
-// Database
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
 // CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
         policy.WithOrigins(
-                "https://portfolio-frontend-piyush.vercel.app", // Use HTTPS!
+                "https://portfolio-frontend-piyush.vercel.app",
                 "http://localhost:3000")
               .AllowAnyHeader()
               .AllowAnyMethod()
@@ -32,24 +24,10 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Hangfire
-builder.Services.AddHangfire(configuration =>
-    configuration.SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
-                 .UseSimpleAssemblyNameTypeSerializer()
-                 .UseRecommendedSerializerSettings()
-                 .UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection"), new SqlServerStorageOptions
-                 {
-                     CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
-                     SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
-                     QueuePollInterval = TimeSpan.Zero,
-                     UseRecommendedIsolationLevel = true,
-                     DisableGlobalLocks = true
-                 }));
-builder.Services.AddHangfireServer();
-
 // Services
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IQueryService, QueryService>();
+builder.Services.AddScoped<IFeedbackService, FeedbackService>();
 
 // Authentication (JWT)
 builder.Services.AddAuthentication("Bearer")
@@ -65,7 +43,8 @@ builder.Services.AddAuthentication("Bearer")
             ValidIssuer = builder.Configuration["Jwt:Issuer"],
             ValidAudience = builder.Configuration["Jwt:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"] ?? throw new InvalidOperationException("JWT key not configured"))
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]
+                    ?? throw new InvalidOperationException("JWT key not configured"))
             )
         };
     });
@@ -98,24 +77,23 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
+
+// For Render – bind to PORT environment variable
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {
     serverOptions.ListenAnyIP(Convert.ToInt32(Environment.GetEnvironmentVariable("PORT") ?? "10000"));
 });
 
-
 var app = builder.Build();
 
 // Middleware
 app.UseHttpsRedirection();
-
 app.UseRouting();
-
 app.UseCors("AllowFrontend");
-
 app.UseAuthentication();
 app.UseAuthorization();
 
+// Swagger – serve UI only in development
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -131,14 +109,7 @@ else
     app.UseHsts();
 }
 
-// Controllers & Hangfire
+// Controllers
 app.MapControllers();
-app.UseHangfireDashboard("/hangfire");
 
 app.Run();
-
-using (var httpClient = new HttpClient())
-{
-    var ip = await httpClient.GetStringAsync("https://api.ipify.org");
-    Console.WriteLine("Public IP: " + ip);
-}

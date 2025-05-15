@@ -44,18 +44,6 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
-            "Hangfire": {
-              "target": "Package",
-              "version": "[1.8.18, )"
-            },
-            "Hangfire.AspNetCore": {
-              "target": "Package",
-              "version": "[1.8.18, )"
-            },
-            "Hangfire.SqlServer": {
-              "target": "Package",
-              "version": "[1.8.18, )"
-            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[8.0.0, )"

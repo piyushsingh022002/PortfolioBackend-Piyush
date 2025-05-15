@@ -1,6 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Hangfire;
-using Backend.Data;
 using Backend.Models;
 using Backend.Services;
 
@@ -8,18 +6,20 @@ using Backend.Services;
 [Route("api/v1")]
 public class ContactController : ControllerBase
 {
-    private readonly AppDbContext _dbContext;
+    // private readonly AppDbContext _dbContext;
+    private readonly IEmailService _emailService;
 
-    public ContactController(AppDbContext dbContext)
+    public ContactController(IEmailService emailService)
     {
-        _dbContext = dbContext;
+        // _dbContext = dbContext;
+        _emailService = emailService;
     }
 
     [HttpPost("contact")]
-    public IActionResult SubmitContact([FromBody] ContactForm contact, [FromServices] IEmailService emailService)
+    public async Task<IActionResult> SubmitContact([FromBody] ContactForm contact)
     {
-        _dbContext.Contacts.Add(contact);
-        _dbContext.SaveChanges();
+        // _dbContext.Contacts.Add(contact);
+        // _dbContext.SaveChanges();
 
         // Enqueue background email job using Hangfire
         if (string.IsNullOrWhiteSpace(contact.Name) ||
@@ -28,8 +28,10 @@ public class ContactController : ControllerBase
         {
             return BadRequest("All fields are required.");
         }
-        BackgroundJob.Enqueue(() => emailService.SendContactEmailAsync(contact.Name, contact.Email, contact.Message));
+        // BackgroundJob.Enqueue(() => emailService.SendContactEmailAsync(contact.Name, contact.Email, contact.Message));
+         await _emailService.SendContactEmailAsync(contact.Name, contact.Email, contact.Message);
 
-        return Ok(new { message = "Contact submitted successfully." });
+
+        return Ok(new { message = "Contact submitted successfully.I will Follow Up very Soon.Thankyou" });
     }
 }

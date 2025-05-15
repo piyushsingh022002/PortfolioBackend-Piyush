@@ -12,11 +12,11 @@ namespace Backend.Controllers
 
     public class QueryController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        // private readonly AppDbContext _context;
         private readonly IQueryService _queryService;
-        public QueryController(AppDbContext context, IQueryService queryService)
+        public QueryController( IQueryService queryService)
         {
-            _context = context;
+            // _context = context;
             _queryService = queryService;
         }
         [HttpPost("query")]
@@ -26,8 +26,8 @@ namespace Backend.Controllers
             {
                 return BadRequest(ModelState);
             }
-            _context.Queries.Add(query);
-            await _context.SaveChangesAsync();
+            // _context.Queries.Add(query);
+            // await _context.SaveChangesAsync();
 
 
 
